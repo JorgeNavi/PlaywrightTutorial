@@ -9,37 +9,51 @@ namespace PlaywrightEnsayo
 
         public static async Task SendKeys (IPage page, string xpath, string text)
         {
-            //Use the XPath locator to fill the input field
-            await page.Locator($"xpath={xpath}").FillAsync(text);
+            try {
+            IElementHandle element = await page.Locator($"xpath={xpath}").ElementHandleAsync();
+                try {
+                    if (element != null)
+                    {
+                        await element.FillAsync(text);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Element not found for XPath: {xpath}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while filling the element: {ex.Message}");
+                }
+            } 
+            catch (Exception ex) {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
 
-         public static async Task Click (IPage page, string xpath, string key)
+         public static async Task Click (IPage page, string xpath)
         {
-            await page.PressAsync(xpath, key);
+            try {
+                await page.ClickAsync(xpath);
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
 
-        public static async Task ClickAsync(IPage page, string selector)
+        public static async Task ClickElementCovered (IPage page, string xpath)
         {
-            await page.ClickAsync(selector);
-        }
-
-        public static async Task<string> GetInnerTextAsync(IPage page, string selector)
-        {
-            return await page.InnerTextAsync(selector);
-        }
-
-        public static async Task<bool> ElementExistsAsync(IPage page, string selector)
-        {
-            var element = await page.QuerySelectorAsync(selector);
-            return element != null;
-        }
-
-        public static async Task WaitForSelectorAsync(IPage page, string selector, int timeout = 5000)
-        {
-            await page.WaitForSelectorAsync(selector, new PageWaitForSelectorOptions
+            //Click on the element using the XPath locator
+            await page.Locator($"xpath={xpath}").ClickAsync(new LocatorClickOptions
             {
-                Timeout = timeout
+                Force = true
             });
+        }
+
+        public static async Task ScrollToElement (IPage page, string xpath)
+        {
+            //Scroll to the element using the XPath locator
+            await page.Locator($"xpath={xpath}").ScrollIntoViewIfNeededAsync();
         }
     }
 }
