@@ -3,14 +3,25 @@ using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
+using static Microsoft.Playwright.Assertions;
 
 namespace PlaywrightEnsayo;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-public class ExampleTest : PageTest
+public class ExampleTest : CustomPageTest
 {
+
     [Test]
+    public async Task SearchPlaywrightInDuckDuclGO()
+    {
+        await Page.GotoAsync("https://duckduckgo.com");
+        Console.WriteLine("Página abierta: " + Page.Url);
+        await Methods.SendKeys(Page, "//input[@id='searchbox_input']", "Playwright");
+        await Methods.Click(Page, "//button[@class='iconButton_button__A_Uiu searchbox_searchButton__LxebD']", "Enter");
+    }
+
+    //[Test]
     public async Task HasTitle()
     {
         await Page.GotoAsync("https://playwright.dev");
@@ -19,21 +30,8 @@ public class ExampleTest : PageTest
         await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
     }
 
-    [Test]
-    public async Task GetStartedLink()
-    {
-        await Page.GotoAsync("https://playwright.dev");
-
-        // Click the get started link.
-        await Page.GetByRole(AriaRole.Link, new() { Name = "Get started" }).ClickAsync();
-
-        // Expects page to have a heading with the name of Installation.
-        await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Installation" })).ToBeVisibleAsync();
-    }
-
-
     //A ver si esta vez funciona
-    [Test]
+    //[Test]
     public async Task HasTitle2()
     {
         await Page.GotoAsync("https://playwright.dev");
@@ -42,7 +40,7 @@ public class ExampleTest : PageTest
         await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
     }
     //Otro test mas para ver que esto funciona ***************************TEST3***************++
-    [Test]
+    //[Test]
     public async Task Hola()
     {
         await Page.GotoAsync("https://playwright.dev");
