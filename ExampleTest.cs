@@ -30,4 +30,15 @@ public class ExampleTest : PageTest
         // Expects page to have a heading with the name of Installation.
         await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Installation" })).ToBeVisibleAsync();
     }
+
+
+    //A ver si esta vez funciona
+    [Test]
+    public async Task HasTitle2()
+    {
+        await Page.GotoAsync("https://playwright.dev");
+
+        // Expect a title "to contain" a substring.
+        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
+    }
 }
