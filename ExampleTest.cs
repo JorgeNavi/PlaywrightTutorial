@@ -41,4 +41,18 @@ public class ExampleTest : PageTest
         // Expect a title "to contain" a substring.
         await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
     }
+    //Otro test mas para ver que esto funciona ***************************TEST3***************++
+    [Test]
+    public async Task Hola()
+    {
+        await Page.GotoAsync("https://playwright.dev");
+        // Expect a title "to contain" a substring.
+        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
+        // Expect an element to be visible on the page.
+        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Get started" })).ToBeVisibleAsync();
+        // Click the get started link.
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Get started" }).ClickAsync();
+        // Expects page to have a heading with the name of Installation.
+        await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Installation" })).ToBeVisibleAsync();
+    }
 }
