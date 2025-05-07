@@ -1,0 +1,15 @@
+# Binarios y temporales
+bin/
+obj/
+
+# Navegadores descargados por Playwright
+**/.playwright/
+
+# Archivos generados por VS o Rider
+*.vs/
+.idea/
+*.user
+*.suo
+
+# Archivos del sistema
+*.DS_Store
