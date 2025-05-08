@@ -4,7 +4,7 @@ using System.Xml.XPath;
 
 namespace PlaywrightEnsayo
 {
-    public static class Methods
+    public class Methods
     {
 
         public static async Task SendKeys (IPage page, string xpath, string text)
@@ -27,7 +27,7 @@ namespace PlaywrightEnsayo
                 }
             } 
             catch (Exception ex) {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"An error occurred sendign keys: {ex.Message}");
             }
         }
 
@@ -37,23 +37,43 @@ namespace PlaywrightEnsayo
                 await page.ClickAsync(xpath);
             }
             catch (Exception ex) {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"An error occurred during click: {ex.Message}");
             }
         }
 
         public static async Task ClickElementCovered (IPage page, string xpath)
         {
-            //Click on the element using the XPath locator
-            await page.Locator($"xpath={xpath}").ClickAsync(new LocatorClickOptions
-            {
-                Force = true
-            });
+            try {
+                await page.Locator($"xpath={xpath}").ClickAsync(new LocatorClickOptions
+                {
+                    Force = true
+                });
+                } catch (Exception ex) {
+                Console.WriteLine($"An error occurred during ClickCovered: {ex.Message}");
+            }
         }
 
         public static async Task ScrollToElement (IPage page, string xpath)
         {
-            //Scroll to the element using the XPath locator
-            await page.Locator($"xpath={xpath}").ScrollIntoViewIfNeededAsync();
+            try {
+                await page.Locator($"xpath={xpath}").ScrollIntoViewIfNeededAsync();
+            } catch (Exception ex) {
+                Console.WriteLine($"An error occurred during ScrollToElement: {ex.Message}");
+            }
+        }
+
+        public static async Task SelectDropdown (IPage page, string xpath, string value)
+        {
+            try {
+                var dropdown = page.Locator($"xpath={xpath}");
+                if (await dropdown.CountAsync() == 0)
+                {
+                    throw new Exception($"Dropdown not found with XPath: {xpath}");
+                }
+                await dropdown.SelectOptionAsync(new SelectOptionValue { Value = value });
+            } catch (Exception ex) {
+                Console.WriteLine($"An error occurred during SelectDropdown: {ex.Message}");
+            }
         }
     }
 }
