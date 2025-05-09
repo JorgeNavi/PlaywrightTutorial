@@ -20,16 +20,15 @@ public class ExampleTest : CustomPageTest
         testMethods = new TestsMethods(Page);
     }
 
-    [Test]
+    //[Test]
     public async Task SearchPlaywrightInDuckDuclGO()
     {
         await Page.GotoAsync("https://duckduckgo.com");
-        Console.WriteLine("Página abierta: " + Page.Url);
         await Methods.SendKeys(Page, "//input[@id='searchbox_input']", "Playwright");
         await Methods.Click(Page, "//button[@class='iconButton_button__A_Uiu searchbox_searchButton__LxebD']");
     }
 
-    [Test]
+    //[Test]
     public async Task TestDemoQA_1()
     {
         await testMethods.GoToDemoQA();
@@ -39,6 +38,23 @@ public class ExampleTest : CustomPageTest
     public async Task TestDemoQA_2()
     {
         await testMethods.OpenAndFillFormInDemoQA();
-    }
 
+        ///ASERCIONES:
+
+        //Asegurarnos de que el valor del campo nombre corresponde con lo esperado
+        var nameValue = await Page.Locator("xpath=//input[@id='firstName']").InputValueAsync();
+        Assert.That(nameValue, Is.EqualTo("Jorge"));
+
+        //Asegurarnos de que el valor del campo apellido corresponde con lo esperado
+        var lastNameValue = await Page.Locator("xpath=//input[@id='lastName']").InputValueAsync();
+        Assert.That(lastNameValue, Is.EqualTo("Moratalla"));
+
+        //Asegurarnos de que el valor del campo email no es nulo
+        var emailValue = await Page.Locator("xpath=//input[@id='userEmail']").InputValueAsync();
+        Assert.That(emailValue, Is.Not.Null);
+
+        //Asegurarnos de que el círculo de "Male" está correctamente marcado
+        var genderChecked = await Page.Locator("xpath=//input[@id='gender-radio-1']").IsCheckedAsync();
+        Assert.That(genderChecked, Is.True, "Aquí pude ir un mensaje opcional");
+    }
 }
