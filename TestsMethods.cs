@@ -35,6 +35,7 @@ public class TestsMethods {
         await Methods.SendKeys(_page, "//input[@id='dateOfBirthInput']", "11/11/2011");
         await Methods.PressEnter(_page);
         await Methods.SelectRadioButton(_page, "//input[@id='hobbies-checkbox-2']", true);
+        await Methods.Click(_page, "//button[@id='submit']");
     }
 }
 
