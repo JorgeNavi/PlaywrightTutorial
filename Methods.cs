@@ -62,19 +62,23 @@ namespace PlaywrightEnsayo
             }
         }
 
-        public static async Task SelectDropdown (IPage page, string xpath, string value)
-        {
-            try {
-                var dropdown = page.Locator($"xpath={xpath}");
-                if (await dropdown.CountAsync() == 0)
-                {
-                    throw new Exception($"Dropdown not found with XPath: {xpath}");
-                }
-                await dropdown.SelectOptionAsync(new SelectOptionValue { Value = value });
-            } catch (Exception ex) {
-                Console.WriteLine($"An error occurred during SelectDropdown: {ex.Message}");
-            }
-        }
+public static async Task SelectDropdown(IPage page, string xpath, string value)
+{
+    try
+    {
+        //Abre el dropdown
+        var dropdown = page.Locator($"xpath={xpath}");
+        await dropdown.ClickAsync();
+
+        //Espera y haz clic en la opción por texto
+        var option = page.Locator($"text={value}");
+        await option.ClickAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred during SelectDropdown: {ex.Message}");
+    }
+}
 
         public static async Task SelectRadioButton(IPage page, string selector, bool isXPath = false) //Si usamos el xPath, tenemos que marcar true en la llamada del metodo por paramétro
         {
