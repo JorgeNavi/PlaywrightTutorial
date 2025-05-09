@@ -1,8 +1,10 @@
 
 
 
+using System.ComponentModel.DataAnnotations;
 using Microsoft.Playwright;
 using NUnit.Framework.Constraints;
+using NUnit.Framework;
 
 namespace PlaywrightEnsayo;
 
@@ -28,11 +30,11 @@ public class TestsMethods {
         await Methods.SendKeys(_page, "//input[@id='firstName']", "Jorge");
         await Methods.SendKeys(_page, "//input[@id='lastName']", "Moratalla");
         await Methods.SendKeys(_page, "//input[@id='userEmail']", "example@example.com");
-        await Methods.Click(_page, "//input[@value='Male']");
-        await Methods.SendKeys(_page, "//input[@id='userNumber']", "623457889");
+        await Methods.SelectRadioButton(_page, "//input[@id='gender-radio-1']", true);
+        await Methods.SendKeys(_page, "//input[@id='userNumber']", "6234578895");
         await Methods.SendKeys(_page, "//input[@id='dateOfBirthInput']", "11/11/2011");
-        await Methods.Click(_page, "//input[@id='hobbies-checkbox-2']");
-        await Methods.Click(_page, "//input[@id='submit']");
+        await Methods.PressEnter(_page);
+        await Methods.SelectRadioButton(_page, "//input[@id='hobbies-checkbox-2']", true);
     }
 }
 

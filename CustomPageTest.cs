@@ -27,8 +27,6 @@ public class CustomPageTest
             SlowMo = 100      //añade una pausa de 100ms entre acciones para verlas con claridad
         });
 
-        Console.WriteLine("Navegador WebKit lanzado correctamente");
-
         //Crea un nuevo contexto (una sesión aislada)
         Context = await Browser.NewContextAsync();
 

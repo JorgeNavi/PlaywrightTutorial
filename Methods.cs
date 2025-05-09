@@ -75,5 +75,43 @@ namespace PlaywrightEnsayo
                 Console.WriteLine($"An error occurred during SelectDropdown: {ex.Message}");
             }
         }
+
+        public static async Task SelectRadioButton(IPage page, string selector, bool isXPath = false) //Si usamos el xPath, tenemos que marcar true en la llamada del metodo por paramétro
+        {
+            try {
+                string script = isXPath //si es un XPath,  .evaluate busca el elemento, cogemos el primer resultado, 
+                //pasamos el evento a true (el del circulo que queremos selccionar) y lanzamos el evento.
+                ? @$"() => {{
+                    const el = document.evaluate(""{selector}"", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    if (el) {{
+                        el.checked = true;
+                        el.dispatchEvent(new Event('change', {{ bubbles: true }}));
+                    }}
+                }}"
+                //si es un selector CSS,  .querySelector busca el elemento,
+                //pasamos el evento a true (el del circulo que queremos selccionar) y lanzamos el evento.
+                : @$"() => {{
+                    const el = document.querySelector(""{selector}"");
+                    if (el) {{
+                        el.checked = true;
+                        el.dispatchEvent(new Event('change', {{ bubbles: true }}));
+                    }}
+                }}";
+
+                await page.EvaluateAsync(script);
+            } catch (Exception ex)
+                {
+                Console.WriteLine($"Error selecting radio button: {ex.Message}");
+                }
+        }
+
+        public static async Task PressEnter(IPage page)
+        {
+            try {
+                await page.Keyboard.PressAsync("Enter");
+            } catch (Exception ex) {
+                Console.WriteLine($"Error pressing Enter: {ex.Message}");
+            }
+        }
     }
 }
